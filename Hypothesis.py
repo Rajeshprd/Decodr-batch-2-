@@ -96,10 +96,34 @@ from scipy import stats
 
 stats.shapiro(Exp_cost.cost)
 
+#1 proportion test
+from statsmodels.stats.proportion import proportions_ztest
+
+proportions_ztest(count =482, nobs = 2000, value = 0.25)
 
 
+#2 proportion test
+import pandas as pd
+Jhony = pd.read_excel("JohnyTalkers.xlsx")
+
+#tabulate the data number
+pd.crosstab(Jhony.Person, Jhony.Icecream)
 
 
+proportions_ztest(count =[58,152], nobs = [480,740])
+
+58/480
+
+152/740
+
+#chi square test
+bahaman = pd.read_excel("Bahaman.xlsx")
+
+table = pd.crosstab(bahaman.Defective, bahaman.Country)
+
+from scipy.stats import chi2_contingency
+
+chi2_contingency(table)
 
 
 
