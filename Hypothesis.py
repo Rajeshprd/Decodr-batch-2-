@@ -56,6 +56,49 @@ promo.describe()
 """ https://pch.district70.org/pdfs/Honors-Biology-Summer-Work-part-2.pdf """
 
 
+crd = pd.read_excel("ContractRenewal_Data.xlsx")
+
+crd.columns = ['sup_A','sup_B','sup_C']
+
+crd.isnull().sum()
+
+crd.boxplot()
+
+stats.shapiro(crd.sup_A)
+stats.shapiro(crd.sup_B)
+stats.shapiro(crd.sup_C)
+
+#one Way ANOVA
+from scipy.stats import f_oneway
+f_oneway(crd.sup_A,crd.sup_B,crd.sup_C)
+
+crd.describe()
+
+
+
+#one sample t test
+Exp_cost = pd.read_excel("ENERGY_COST.xlsx")
+
+Exp_cost.columns = ['ID', 'cost']
+
+
+from scipy.stats import ttest_1samp
+ttest_1samp(Exp_cost.cost,300)
+
+Exp_cost.cost.mean()
+
+
+#normaility test
+
+from scipy import stats 
+# Ho : Data is normal
+# H1 : Data is not normal
+
+stats.shapiro(Exp_cost.cost)
+
+
+
+
 
 
 
