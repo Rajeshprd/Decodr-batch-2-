@@ -127,3 +127,189 @@ chi2_contingency(table)
 
 
 
+
+import pandas as pd
+bigmart =pd.read_csv("Bigmart.csv")
+
+bigmart.columns
+
+bigmart.Outlet_Size.fillna("Others",inplace = True)
+
+bigmart.Outlet_Size.unique()
+
+Others = bigmart.Item_Outlet_Sales[bigmart.Outlet_Size == "Others"]
+
+High = bigmart.Item_Outlet_Sales[bigmart.Outlet_Size == "High"]
+
+Medium = bigmart.Item_Outlet_Sales[bigmart.Outlet_Size == "Medium"]
+
+Small = bigmart.Item_Outlet_Sales[bigmart.Outlet_Size == "Small"]
+
+
+"""
+Step 1
+Y - Sales
+X - Outlet Size
+
+Step 2
+alpha = 0.05
+
+Step 3
+One way ANOVA
+
+Step 4 
+H0: X does not affect Y
+H1: X affect Y 
+
+"""
+#Step 5 
+from scipy.stats import f_oneway
+f_oneway(High, Medium, Small, Others)
+
+"""
+Step 6
+p value = 8.228023520649935e-91
+
+Step 7
+
+P value is low then alpha
+
+Step 8
+Null Rejected
+
+Step 9
+
+X affects Y
+
+outlet size affects the sale
+
+"""
+
+#Now lets find the Fat content affects the sales / not
+
+import pandas as pd
+bigmart =pd.read_csv("Bigmart.csv")
+
+bigmart.columns
+
+bigmart.Item_Fat_Content = bigmart.Item_Fat_Content.str.replace('LF', "Low_Fat").replace('reg', "Regular").replace('low fat',"Low_Fat").replace('Low Fat',"Low_Fat")
+
+bigmart.Item_Fat_Content.unique()
+
+'''
+Step 1
+Y - Item_Outlet_Sales (C)
+X - Item_Fat_Content (Low_Fat, Regular) (D)
+
+Step 2
+alpha = 0.05
+
+Step 3 
+2 sample t test
+
+Step 4
+H0: X doesn't affect Y
+H1: X affects Y
+'''
+#step 5
+
+Low_Fat = bigmart.Item_Outlet_Sales[bigmart.Item_Fat_Content == "Low_Fat"]
+Regular = bigmart.Item_Outlet_Sales[bigmart.Item_Fat_Content == "Regular"]
+
+from scipy import stats
+stats.shapiro(Low_Fat)
+
+from scipy import stats
+stats.shapiro(Regular)
+
+from scipy.stats import ttest_ind
+ttest_ind(Low_Fat, Regular)
+
+'''
+Step 6
+p value = 0.08
+
+Step 7
+P value is High
+
+Step 8
+Null Accepted
+
+Step 9
+fat_content doesn't affects Outlet sales 
+
+'''
+
+'''
+Feature Engineering - handling the data variables is called feature engineering
+Null value handling
+Outlier handling
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
