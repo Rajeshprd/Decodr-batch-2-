@@ -89,10 +89,10 @@ ht_class_tuple
 ht_class_set = {180,170,168,150}
 
 #dict { key : values } - mutable
-ht_class_dict = {"stu1" : 180, 
-                 "stu2": 170,
-                 "stu3" : 168,
-                 "stu4" : 150}
+ht_class_dict = {"stu1" : [180,110], 
+                 "stu2": [170,100],
+                 "stu3" : [168,100],
+                 "stu4" : [150.90]}
 type(ht_class)
 type(ht_class_tuple)
 type(ht_class_set)
