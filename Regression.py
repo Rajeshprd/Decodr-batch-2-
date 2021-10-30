@@ -117,11 +117,13 @@ auto_data.drop('car_name',inplace = True, axis  = 1 )
 
 #multi linear regression y & x - (C)
 
+#no need of array in multi linear regression
+
 y = auto_data.mpg
 X = auto_data.iloc[:,1:]
 
 #model splitting
-x_train, x_test, y_train, y_test = train_test_split(X,y,test_size =0.2,                                                   random_state = 123)
+x_train, x_test, y_train, y_test = train_test_split(X,y,test_size =0.2, random_state = 123)
 
 #model creation 
 mul_reg = LinearRegression()
@@ -174,16 +176,117 @@ auto_price.columns =["symboling","normalized_losses","make","fuel_type","aspirat
 # x = all continous data
 
 
+auto_price.isnull().sum()
+
+auto_price.info()
+auto_price.drop(auto_price.columns[0:2], axis = 1, inplace = True)
+
+auto_price.dropna(inplace= True)
+
+# select only continous variables 
+df = auto_price.select_dtypes(exclude = [object])
+df.select_dtypes(include= ['int64','float64'])
+
+y_price = df.price
+X_price = df.iloc[:,0:-1]
+
+X.shape
+y.shape
+
+x_train,x_test,y_train,y_test = train_test_split(X_price,y_price, test_size=0.2,random_state =30)
+
+df.describe()
+
+auto_price.boxplot('highway_mpg')
+
+#HW : drop the below three obs of the data
+auto_price[auto_price.highway_mpg >= 48]
+
+#model creation 
+mul_reg = LinearRegression()
+
+#model fitting
+mul_reg.fit(X = x_train, y = y_train)
+
+#model equation
+mul_reg.coef_
+mul_reg.intercept_
+
+mul_reg.score(x_test,y_test)
 
 
+df.columns
+to_pred = {'wheel_base' : [88.5,99.5,102.6,105.5], 
+           'length': [169.8,177.5,140.6,153.6], 
+           'width' : [64.8,66.5,70.5,68.5],
+           'height' : [49.5,50.2,60.2,48.5], 
+           'curb_weight' : [2452,2645,3752,3125],
+           'engine_size' : [130,140,144,156],
+           'bore' : [3.47,2.5,3.6,4.7], 
+           'stroke':[2.6,3.4,4.2,2.9],
+           'compression_ratio' : [9,10,12,14],
+           'horsepower' : [111,123,143,156],
+           'peak_rpm' : [5000,4500,5500,6000],
+           'city_mpg': [21,34,22,45],
+           'highway_mpg' : [33,44,39,50]}
+
+to_pred = pd.DataFrame(to_pred)
+
+to_pred.shape
+type(to_pred)
+
+mul_reg.predict(to_pred)
 
 
+train_pred = mul_reg.predict(x_train)
+
+train_actual = y_train.copy()
+
+residuals = train_actual - train_pred
+
+#RMSE
+from math import sqrt
+sqrt(np.mean(residuals**2))
+
+from sklearn.metrics import mean_squared_error
+mean_squared_error(train_actual, train_pred, squared = False)
+
+sns.pairplot(df)
 
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+exp = pd.read_excel("Regression.xlsx")
+
+x = np.array(exp.Kelvin).reshape(-1,1)
+y = np.array(exp.Expansion).reshape(-1,1)
 
 
+x_train , x_test , y_train , y_test = train_test_split(x,y,test_size=0.2,random_state=0)
 
+model = LinearRegression() #y = mx + C
+model.fit(X = x_train,  y= y_train)
+model.coef_
+model.intercept_
+model.score(x_test,y_test)
 
+pred = model.predict(x)
+
+plt.scatter(x_train,y_train)
+plt.scatter(x_test,y_test)
+plt.plot(exp.Kelvin,pred,"r")
+
+# y = ax^2 +bx +c - eqauation of parabola - 2 degree quadratic equation 
+
+#polynomial transformation 
+
+#HW : drop the below three obs of the data
+auto_price[auto_price.highway_mpg >= 48]
 
 
 
