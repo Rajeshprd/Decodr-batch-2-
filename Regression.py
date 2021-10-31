@@ -114,7 +114,8 @@ auto_data.horsepower.fillna(auto_data.horsepower.median(),inplace=True)
 # x - cylinders, displacement, horsepower','weight','acceleration','model_year','origin'
 
 auto_data.drop('car_name',inplace = True, axis  = 1 )
-
+auto_data.drop(['model_year','origin','cylinders'], axis = 1, inplace = True)
+sns.pairplot(auto_data)
 #multi linear regression y & x - (C)
 
 #no need of array in multi linear regression
@@ -254,6 +255,11 @@ mean_squared_error(train_actual, train_pred, squared = False)
 sns.pairplot(df)
 
 
+#HW : drop the below three obs of the data
+auto_price[auto_price.highway_mpg >= 48].index
+
+auto_price.drop(auto_price[auto_price.highway_mpg >= 48].index)
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -275,18 +281,104 @@ model.coef_
 model.intercept_
 model.score(x_test,y_test)
 
-pred = model.predict(x)
+pred_l_train = model.predict(x_train)
+pred_l_test = model.predict(x_test)
+
+pred_l = model.predict(x)
 
 plt.scatter(x_train,y_train)
 plt.scatter(x_test,y_test)
-plt.plot(exp.Kelvin,pred,"r")
+plt.plot(exp.Kelvin,pred_l,"r")
 
 # y = ax^2 +bx +c - eqauation of parabola - 2 degree quadratic equation 
 
 #polynomial transformation 
 
-#HW : drop the below three obs of the data
-auto_price[auto_price.highway_mpg >= 48]
+from sklearn.preprocessing import PolynomialFeatures
+
+# creation of polynomaial feature  
+poly = PolynomialFeatures(2)
+
+# convert our trainin x into polynomial x - 
+'''y =mx +c -> y = ax^2 + bx + c'''
+X_train_transform = poly.fit_transform(x_train)
+
+poly_model = LinearRegression()
+poly_model.fit(X_train_transform,y_train)
+
+# get the predictions
+# convert our test x into polynomial x - 
+X_test_transform = poly.fit_transform(x_test)
+
+poly_model.score(X_test_transform,y_test)
+
+# to get predcition for the graph line
+X_transform = poly.fit_transform(x)
+pred = poly_model.predict(X_transform)
+
+pred_p_train = poly_model.predict(X_train_transform)
+pred_p_test = poly_model.predict(X_test_transform)
+
+#graph
+plt.scatter(x_train,y_train)
+plt.scatter(x_test,y_test)
+plt.plot(exp.Kelvin,pred,"b_")
+plt.plot(exp.Kelvin,pred_l,"r")
+
+
+from sklearn.metrics import mean_squared_error
+mean_squared_error(y_train, pred_l_train, squared = False) #linear regression - 3.23
+
+from sklearn.metrics import mean_squared_error
+mean_squared_error(y_train, pred_p_train, squared = False) #polynomial regression - 2.01
+
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import mean_squared_error
+
+auto_mpg = pd.read_csv("auto-mpg.data",delim_whitespace = True,names=['mpg','cylinders','displacement','horsepower','weight','acceleration','model_year','origin','car_name'],na_values= "?")
+
+auto_mpg = auto_mpg[['mpg','displacement','horsepower','weight','acceleration']]
+
+
+auto_mpg.isnull().sum()
+auto_mpg.horsepower.fillna(auto_mpg.horsepower.median(),inplace=True)
+
+
+y = auto_mpg.mpg
+x = auto_mpg.iloc[:,1:]
+
+sns.pairplot(auto_mpg)
+
+# polynomial transformation needed
+poly = PolynomialFeatures(2)
+
+#this contains only displacement, hp, wt
+x_transform = pd.DataFrame(poly.fit_transform(x.iloc[:,:-1])) 
+
+
+x_all = pd.concat([x_transform,x.iloc[:,3]], axis =1)
+
+X_train,X_test, y_train, y_test = train_test_split(x_all,y,train_size=.3,random_state=42)
+
+poly_model= LinearRegression()
+
+poly_model.fit(X_train,y_train)
+
+poly_model.coef_
+
+poly_model.intercept_
+poly_model.score(X_test,y_test)
+
+
+
 
 
 

@@ -276,8 +276,11 @@ auto_df.horsepower.fillna(auto_df.horsepower.median(), inplace = True)
 
 
 
+bigmart.columns
+dummy_variables = pd.get_dummies(bigmart, columns=['Item_Fat_Content','Item_Type','Outlet_Type','Outlet_Location_Type','Outlet_Size'])
 
 
+#HW : Multi linear for bigmart with dummy variables and poly transformation if needed
 
 
 
