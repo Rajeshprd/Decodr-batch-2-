@@ -378,6 +378,48 @@ poly_model.intercept_
 poly_model.score(X_test,y_test)
 
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeRegressor
+
+auto_data = pd.read_csv("auto-mpg.data",delim_whitespace = True,names=['mpg','cylinders','displacement','horsepower','weight','acceleration','model_year','origin','car_name'],na_values= "?")
+
+
+auto_data.isnull().sum()
+auto_data.info()
+
+auto_data.horsepower.unique()
+
+auto_data.boxplot()
+auto_data.horsepower.fillna(auto_data.horsepower.median(),inplace=True)
+
+#y - mpg
+# x - cylinders, displacement, horsepower','weight','acceleration','model_year','origin'
+
+auto_data.drop('car_name',inplace = True, axis  = 1 )
+auto_data.drop(['model_year','origin','cylinders'], axis = 1, inplace = True)
+sns.pairplot(auto_data)
+#multi linear regression y & x - (C)
+
+#no need of array in multi linear regression
+
+y = auto_data.mpg
+X = auto_data.iloc[:,1:]
+
+#model splitting
+x_train, x_test, y_train, y_test = train_test_split(X,y,test_size =0.2, random_state = 123)
+
+
+# model 
+dtmodel = DecisionTreeRegressor()
+dtmodel.fit(x_train,y_train)
+dtmodel.score(x_test,y_test) #testing accuracy
+
+
+
 
 
 
