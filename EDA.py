@@ -128,7 +128,7 @@ bigmart.Item_Fat_Content = bigmart.Item_Fat_Content.str.replace('low fat',"LF") 
 
 # to replace str we use function str
 
-bigmart.Item_Fat_Content = bigmart.Item_Fat_Content.str.replace('LF', "Low Fat").replace('reg', "Regular").replace("AJ", "DS")
+bigmart.Item_Fat_Content = bigmart.Item_Fat_Content.str.replace('Low Fat', "LF").replace('reg', "Regular").replace("AJ", "DS")
 
 ###########
 #Item_Visibility -  probability of being seen
@@ -221,7 +221,7 @@ bigmart.Outlet_Size.isnull().sum()
 bigmart.Outlet_Size.fillna(bigmart.Outlet_Size.mode())
 
 #imputaion by values
-bigmart.Outlet_Size.fillna("Not defined",inplace = True)
+bigmart.Outlet_Size.fillna("Others",inplace = True)
 
 """HW : IPL dateset without null values - do needful """
 
@@ -277,7 +277,7 @@ auto_df.horsepower.fillna(auto_df.horsepower.median(), inplace = True)
 
 
 bigmart.columns
-dummy_variables = pd.get_dummies(bigmart, columns=['Item_Fat_Content','Item_Type','Outlet_Type','Outlet_Location_Type','Outlet_Size'])
+dummy_variables = pd.get_dummies(bigmart, columns=['Item_Fat_Content','Item_Type','Outlet_Type','Outlet_Location_Type','Outlet_Size','Outlet_Establishment_Year'])
 
 
 #HW : Multi linear for bigmart with dummy variables and poly transformation if needed
